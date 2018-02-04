@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 //import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 import BookShelf from "./BookShelf";
 
@@ -21,7 +22,7 @@ class BookList extends Component {
   // Database handling funtions
   dbUpdateBook = (book, shelf) => {
     BooksAPI.update(book, shelf)
-    .then( () => BooksAPI.getAll().then((books) => this.setState({ books })) )
+      .then(() => BooksAPI.getAll().then((books) => this.setState({ books })))
   }
 
   // Take an array ok books object and organize it in shelfs
@@ -71,6 +72,9 @@ class BookList extends Component {
               {this.renderShelfs(this.state.books)}
             </div>
           </div>
+        </div>
+        <div className="open-search">
+          <Link to='search'> Add a book</Link>
         </div>
       </div>
     )

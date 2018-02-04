@@ -2,19 +2,9 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 class Book extends Component {
-  // TODO: Evaluate if it's better to lift state up
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedShelf: props.shelf
-    };
-  }
 
   handleChange = (obj, e) => {
     this.props.handleDbUpdate(obj, e.target.value)
-    this.setState({
-      selectedShelf: e.target.value
-    })
   }
 
   render() {
@@ -23,7 +13,7 @@ class Book extends Component {
         <div className="book-top">
           <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: 'url(' + this.props.backgroundImage + ')' }}></div>
           <div className="book-shelf-changer">
-            <select value={this.state.selectedShelf} onChange={(e) => this.handleChange(this.props, e)}>
+            <select value={this.props.shelf || 'none'} onChange={(e) => this.handleChange(this.props, e)}>
               <option value="none" disabled>Move to...</option>
               <option value="currentlyReading">Currently Reading</option>
               <option value="wantToRead">Want to Read</option>
@@ -33,7 +23,7 @@ class Book extends Component {
           </div>
         </div>
         <div className="book-title">{this.props.title}</div>
-        <div className="book-authors">{this.props.authors.map(author => author)}</div>
+        <div className="book-authors">{this.props.authors && this.props.authors.map(author => author)}</div>
       </div>
     )
   }

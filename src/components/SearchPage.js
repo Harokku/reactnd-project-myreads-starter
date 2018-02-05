@@ -11,25 +11,33 @@ class SearchPage extends Component {
     super(props);
     this.state = {
       searchTerm: "",
-      books: [],
+      searchResult: [],
     };
   }
 
   doSearch = (e) => {
     this.setState(
       { searchTerm: e.target.value },
-      () => console.log(this.state)
+      //() => console.log(this.state)
     )
     BooksAPI.search(e.target.value)
-    .then(result => { 
-      this.setState({ books: result })
-      console.log(result) 
-    })
+      .then(result => {
+        this.setState({ searchResult: result })
+        //console.log(result)
+      })
+  }
+
+  mapShelfToSearchResult = (books, results) => {
+    console.log(books)
+    console.log(results)
+    console.log({ ...results[1], ...books[1] })
+    return results.map(result => (books.find(book => book.id === result.id) || result))
   }
 
   render() {
     return (
       <div className="search-books">
+        {/*this.mapShelfToSearchResult(this.props.books, this.state.searchResult)*/}
         <div className="search-books-bar">
           <Link to='/' className="close-search">Close</Link>
           <div className="search-books-input-wrapper">
@@ -46,7 +54,10 @@ class SearchPage extends Component {
           </div>
         </div>
         <div className="search-books-results">
-          <BooksList books={this.state.books} />
+          <BooksList
+            books={this.mapShelfToSearchResult(this.props.books, this.state.searchResult)}
+            handleDbUpdate={this.props.handleDbUpdate}
+          />
         </div>
       </div>
     )
@@ -54,7 +65,8 @@ class SearchPage extends Component {
 }
 
 SearchPage.protoTypes = {
-  booksState: PropTypes.array
+  books: PropTypes.array.isRequired,
+  handleDbUpdate: PropTypes.func,
 }
 
 export default SearchPage

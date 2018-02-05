@@ -1,35 +1,15 @@
 import React, { Component } from "react";
-//import PropTypes from "prop-types";
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
 import BookShelf from "./BookShelf";
 
-import * as BooksAPI from './../BooksAPI'
-
 class ShelfList extends Component {
-  // TODO: Evaluate if it's better to lift state up
-  constructor(props) {
-    super(props);
-    this.state = {
-      books: []
-    };
-  }
-
-  componentDidMount() {
-    BooksAPI.getAll().then((books) => this.setState({ books }))
-  }
-
-  // Database handling funtions
-  dbUpdateBook = (book, shelf) => {
-    BooksAPI.update(book, shelf)
-      .then(() => BooksAPI.getAll().then((books) => this.setState({ books })))
-  }
-
   // Take an array ok books object and organize it in shelfs
   // Return an object in the form: 
   // shelf: array(books)
   divideBooksInShelfs = (books) => {
-    return this.state.books.reduce((bookShelfs, book) => {
+    return books.reduce((bookShelfs, book) => {
       if (!bookShelfs[book.shelf]) {
         bookShelfs[book.shelf] = []
       }
@@ -49,7 +29,7 @@ class ShelfList extends Component {
           key={shelf}
           shelfTitle={this.formatShelfName(shelf)}
           books={shelfs[shelf]}
-          handleDbUpdate={this.dbUpdateBook}
+          handleDbUpdate={this.props.hadleDbUpdate}
         />
       ]
     }
@@ -69,7 +49,7 @@ class ShelfList extends Component {
           </div>
           <div className="list-books-content">
             <div>
-              {this.renderShelfs(this.state.books)}
+              {this.renderShelfs(this.props.books)}
             </div>
           </div>
         </div>
@@ -81,8 +61,9 @@ class ShelfList extends Component {
   }
 }
 
-/*BookList.protoTypes = {
-
-}*/
+ShelfList.protoTypes = {
+  books: PropTypes.array.isRequired,
+  hadleDbUpdate: PropTypes.func,
+}
 
 export default ShelfList

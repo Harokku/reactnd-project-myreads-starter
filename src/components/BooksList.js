@@ -28,7 +28,7 @@ class BooksList extends Component {
 BooksList.protoTypes = {
   // TODO: Identify props
   books: PropTypes.array.isRequired,
-  hadleDbUpdate: PropTypes.func,
+  handleDbUpdate: PropTypes.func,
 }
 
 export default BooksList

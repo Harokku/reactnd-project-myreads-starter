@@ -5,39 +5,45 @@ import { Link } from "react-router-dom";
 import BookShelf from "./BookShelf";
 
 class ShelfList extends Component {
-  // Take an array ok books object and organize it in shelfs
-  // Return an object in the form: 
-  // shelf: array(books)
+  /**
+   * @description Organize books in shelves
+   * @param {array} books - Array of books containing a shelf property with actual shelf
+   * @returns {object} whose key is shelf name and value is an array of books
+   */
   divideBooksInShelfs = (books) => {
     return books.reduce((bookShelfs, book) => {
       if (!bookShelfs[book.shelf]) {
-        bookShelfs[book.shelf] = []
+        bookShelfs[book.shelf] = [];
       }
-      bookShelfs[book.shelf] = [book, ...bookShelfs[book.shelf]]
-      return bookShelfs
+      bookShelfs[book.shelf] = [book, ...bookShelfs[book.shelf]];
+      return bookShelfs;
     }, {})
   }
 
-  // TODO: Check is it's possible to merge this into divideBooksInShelfs
+  /**
+   * @description Render shelfs
+   * @param {books} books - Array of books containing a shelf property with actual shelf
+   * @returns BookShelf component array
+   */
   renderShelfs = (books) => {
-    const shelfs = this.divideBooksInShelfs(books)
-    let compToRender = []
-    for (let shelf in shelfs) {
-      compToRender = [
-        ...compToRender,
-        <BookShelf
-          key={shelf}
-          shelfTitle={this.formatShelfName(shelf)}
-          books={shelfs[shelf]}
-          handleDbUpdate={this.props.hadleDbUpdate}
-        />
-      ]
-    }
-    return compToRender
+    const shelfs = this.divideBooksInShelfs(books);
+    return Object.keys(shelfs).map((key) => (
+      <BookShelf
+        key={key}
+        shelfTitle={this.formatShelfName(key)}
+        books={shelfs[key]}
+        handleDbUpdate={this.props.hadleDbUpdate}
+      />
+    ))
   }
 
+  /**
+   * @description Format book's shelf value  to use as shelf title
+   * @param {string} shelfTitle - shelf value (usually returned from api), ex: wantToRead
+   * @returns {string} Ready to display title, ex: Want To Read
+   */
   formatShelfName = (shelfTitle) => {
-    return shelfTitle.charAt(0).toUpperCase() + shelfTitle.slice(1).replace(/([A-Z])/g, ' $1')
+    return shelfTitle.charAt(0).toUpperCase() + shelfTitle.slice(1).replace(/([A-Z])/g, ' $1');
   }
 
   render() {

@@ -33,7 +33,6 @@ class BookShelf extends Component {
 }
 
 BookShelf.protoTypes = {
-  // TODO: Identify props
   shelfTitle: PropTypes.string.isRequired,
   books: PropTypes.array.isRequired,
   hadleDbUpdate: PropTypes.func,

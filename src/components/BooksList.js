@@ -26,7 +26,6 @@ class BooksList extends Component {
 }
 
 BooksList.protoTypes = {
-  // TODO: Identify props
   books: PropTypes.array.isRequired,
   handleDbUpdate: PropTypes.func,
 }

@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 class Book extends Component {
 
   handleChange = (obj, e) => {
-    this.props.handleDbUpdate(obj, e.target.value)
+    this.props.handleDbUpdate(obj, e.target.value);
   }
 
   render() {
